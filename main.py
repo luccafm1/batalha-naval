@@ -1,4 +1,5 @@
-
+# esqueleto básico
+# integrar PC
 # consertar erro out of bounds
 
 import random
@@ -253,7 +254,7 @@ def inicializar():
 def visual():
     print('')
     print('')
-    mostrar_tabuleiro('PC', False)
+    mostrar_tabuleiro('PC', True)
     print('')
     print(f'Embarcações restantes: {embarcacao_pc}')
     print('')
