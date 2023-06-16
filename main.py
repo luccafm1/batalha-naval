@@ -226,7 +226,7 @@ def inicializar():
 
     embarcacoes_total = 0
     embarcacoes_totalPC = 0
-    while embarcacoes_total < 1:
+    while embarcacoes_total < 5:
         mostrar_tabuleiro('PLAYER', True)
         embarcacao = input(
             'Digite o veículo (AV: Porta-Avião / NT: Navio-Tanque / CT: Contra-Torpedeiro '
