@@ -28,9 +28,11 @@ def mostrar_tabuleiro(jogador, visivel):
     else:
         print("  Tabuleiro do Jogador")
         print()
-        print("   0 1 2 3 4 5 6 7 8 9")
+        print("     0 1 2 3 4 5 6 7 8 9")
+        print("     ___________________")
         for i, row in enumerate(tabuleiroPLAYER if visivel else tabuleiro2):
             print(f"{i + 0:2d} ", end='')
+            print(f"{'|'} ", end='')
             for c in row:
                 print(c, end=' ')
             print()
@@ -154,8 +156,8 @@ def embarcacoes(linha, coluna, embarcacao, orientacao, jogador):
     linha_inicial, coluna_inicial = pos_inicial
     linha_final, coluna_final = pos_final
 
-    for i in range(linha_inicial, linha_final + 1):
-        for j in range(coluna_inicial, coluna_final + 1):
+    for i in range(linha_inicial, (linha_final + 1) if orientacao == 'h' else linha_final):
+        for j in range(coluna_inicial, (coluna_final + 1) if orientacao == 'v' else coluna_final):
             if jogador == 'PLAYER':
                 if tabuleiro2[i][j] != 0:
                     print('ERRO: Veículo sobreposto!')
@@ -167,7 +169,7 @@ def embarcacoes(linha, coluna, embarcacao, orientacao, jogador):
     while tamanho < tamanho_limite:
         if jogador == 'PLAYER':
             if orientacao == 'h':
-                if coluna + tamanho_limite >= 10:
+                if coluna + tamanho_limite >= 11:
                     print('ERRO: Posição inválida. O veículo não pode ficar fora do tabuleiro!')
                     return False
                 tabuleiro2[linha][coluna + tamanho] = valor_embarcacao
@@ -254,7 +256,7 @@ def inicializar():
 def visual():
     print('')
     print('')
-    mostrar_tabuleiro('PC', True)
+    mostrar_tabuleiro('PC', False)
     print('')
     print(f'Embarcações restantes: {embarcacao_pc}')
     print('')
