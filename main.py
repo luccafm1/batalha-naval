@@ -1,6 +1,3 @@
-# esqueleto básico
-# integrar PC
-# consertar erro out of bounds
 
 import random
 
@@ -15,28 +12,49 @@ vida_embarcacoesPC = {'AV': 5, 'NT': 4, 'CT': 3, 'SB': 2, 'DT': 1}
 
 
 def mostrar_tabuleiro(jogador, visivel):
-    if jogador == 'PC':
-        print("  Tabuleiro do Computador")
+    if jogador == 'GERAL':
+        print("     Tabuleiro do Jogador          Tabuleiro do Computador")
         print()
-        print("   0 1 2 3 4 5 6 7 8 9")
-        for i, coluna in enumerate(tabuleiroPC if visivel else tabuleiro):
-            print(f"{i + 0:2d} ", end='')
-            for c in coluna:
-                print(c, end=' ')
-            print()
+        print("     0 1 2 3 4 5 6 7 8 9             0 1 2 3 4 5 6 7 8 9")
+        print("     ___________________             ___________________")
+        for i, (coluna_pc, coluna_player) in enumerate(zip(tabuleiro2 if visivel else tabuleiroPLAYER, tabuleiro if visivel else tabuleiroPC)):
+            linha = ""
+            linha += f"{i + 0:2d} {'|'} "
+            for pc, jogador in zip(coluna_pc, coluna_player):
+                linha += f"{pc} "
+            linha += '\t\t'
+            linha += f"{i + 0:2d} {'|'} "
+            for jogador in coluna_player:
+                linha += f"{jogador} "
+            print(linha)
         print()
+        mostrar_vida()
     else:
-        print("  Tabuleiro do Jogador")
+        print()
+        print("    Tabuleiro do Jogador")
         print()
         print("     0 1 2 3 4 5 6 7 8 9")
         print("     ___________________")
-        for i, row in enumerate(tabuleiroPLAYER if visivel else tabuleiro2):
+        for i, row in enumerate(tabuleiro2 if visivel else tabuleiroPLAYER):
             print(f"{i + 0:2d} ", end='')
             print(f"{'|'} ", end='')
             for c in row:
                 print(c, end=' ')
             print()
         print()
+
+
+def mostrar_vida():
+    print('-------------------------')
+    print('|  Embarcação  |  Vida  |')
+    print('-------------------------')
+    print(f'| Porta-Avião  |   {vida_embarcacoes["AV"]}    |')
+    print(f'| Navio-Tanque |   {vida_embarcacoes["NT"]}    |')
+    print(f'| Contra-Torp. |   {vida_embarcacoes["CT"]}    |')
+    print(f'| Submarino    |   {vida_embarcacoes["SB"]}    |')
+    print(f'| Destroyer    |   {vida_embarcacoes["DT"]}    |')
+    print('-------------------------')
+    print()
 
 
 def checar_valor(tabuleiro, numero):
@@ -122,7 +140,9 @@ def jogada(linha, coluna):
             except IndexError:
                 print(f'ERRO: Posição inválida {linha, coluna}. Impossível atacar um veículo fora do jogo! '
                       f'Tente novamente.')
-                pass
+                linha = int(input('Digite a linha para posicionar seu veículo: '))
+                coluna = int(input('Digite a coluna para posicionar seu veículo: '))
+                continue
 
 
 def embarcacoes(linha, coluna, embarcacao, orientacao, jogador):
@@ -206,11 +226,11 @@ def inicializar():
 
     embarcacoes_total = 0
     embarcacoes_totalPC = 0
-    while embarcacoes_total < 5:
-        mostrar_tabuleiro('PLAYER', False)
+    while embarcacoes_total < 1:
+        mostrar_tabuleiro('PLAYER', True)
         embarcacao = input(
             'Digite o veículo (AV: Porta-Avião / NT: Navio-Tanque / CT: Contra-Torpedeiro '
-            '/ SB: Submarino / DT: Destroier): '
+            '/ SB: Submarino / DT: Destroyer): '
         )
         if embarcacao not in tipos_embarcacoes:
             print('ERRO: Veículo inválido.')
@@ -242,7 +262,7 @@ def inicializar():
     while embarcacoes_totalPC != 5:
         linha = random.randint(0, 4)
         coluna = random.randint(0, 9)
-        orientacao = 'h'
+        orientacao = random.choice(['h', 'v'])
         embarcacao = tipos_embarcacoes[embarcacoes_totalPC]
         try:
             if embarcacoes(linha, coluna, embarcacao, orientacao, 'PC'):
@@ -256,13 +276,8 @@ def inicializar():
 def visual():
     print('')
     print('')
-    mostrar_tabuleiro('PC', False)
-    print('')
-    print(f'Embarcações restantes: {embarcacao_pc}')
-    print('')
-    mostrar_tabuleiro('PLAYER', True)
-    print('')
-    print(f'Embarcações restantes: {embarcacao_player}')
+    print(f'   Embarcações restantes: {embarcacao_player}        Embarcações restantes: {embarcacao_pc}')
+    mostrar_tabuleiro('GERAL', False)
     print('')
     print('')
 
@@ -281,7 +296,8 @@ while embarcacao_pc != 0 and embarcacao_player != 0:
     contador = 0
     if continuar == 's':
         if jogador == 'PC':
-
+            print()
+            print()
             linha = random.randint(0, 4)
             print(f'Computador jogou linha: {linha}!')
             coluna = random.randint(0, 9)
@@ -309,6 +325,16 @@ while embarcacao_pc != 0 and embarcacao_player != 0:
 
 
 if embarcacao_player == 0 and continuar == 's':
-    print('Você perdeu!')
+    print('---------- SKILL ISSUE ----------')
+    print()
+    print('          Você perdeu!')
+    print('    A marinha inimiga ganhou!')
+    print()
+    print('Jogo feito por: Lucca, Bruno, Gaias, André e Henrique')
 else:
-    print('Voce ganhou!')
+    print('------------ VITORIA ------------')
+    print()
+    print('            Vitória!')
+    print(' Você derrotou a marinha inimiga!')
+    print()
+    print('Jogo feito por: Lucca, Bruno, Gaias, André e Henrique')
