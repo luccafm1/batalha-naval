@@ -211,12 +211,12 @@ def embarcacoes(linha, coluna, embarcacao, orientacao, jogador):
                 continue
         else:
             if orientacao == 'h':
-                if coluna + tamanho_limite >= 10:
+                if coluna + tamanho_limite >= 11:
                     return False
                 tabuleiro[linha][coluna + tamanho] = valor_embarcacao
                 tamanho += 1
             elif orientacao == 'v':
-                if linha + tamanho_limite >= 5:
+                if linha + tamanho_limite >= 6:
                     return False
                 tabuleiro[linha + tamanho][coluna] = valor_embarcacao
                 tamanho += 1
@@ -230,7 +230,7 @@ def inicializar():
 
     embarcacoes_total = 0
     embarcacoes_totalPC = 0
-    while embarcacoes_total < 1:
+    while embarcacoes_total < 5:
         mostrar_tabuleiro('PLAYER', True)
         embarcacao = input(
             'Digite o veículo (AV: Porta-Avião / NT: Navio-Tanque / CT: Contra-Torpedeiro '
