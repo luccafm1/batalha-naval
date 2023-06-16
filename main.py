@@ -1,5 +1,4 @@
-# esqueleto básico
-# integrar PC
+
 # consertar erro out of bounds
 
 import random
@@ -10,9 +9,6 @@ tabuleiro2 = [[0] * 10 for _ in range(5)]
 tabuleiroPLAYER = [['~'] * 10 for _ in range(5)]
 tabuleiroPC = [['~'] * 10 for _ in range(5)]
 
-embarcacao_player = 0
-embarcacao_pc = 0
-
 vida_embarcacoes = {'AV': 5, 'NT': 4, 'CT': 3, 'SB': 2, 'DT': 1}
 vida_embarcacoesPC = {'AV': 5, 'NT': 4, 'CT': 3, 'SB': 2, 'DT': 1}
 
@@ -22,7 +18,7 @@ def mostrar_tabuleiro(jogador, visivel):
         print("  Tabuleiro do Computador")
         print()
         print("   0 1 2 3 4 5 6 7 8 9")
-        for i, coluna in enumerate(tabuleiro if visivel else tabuleiro):
+        for i, coluna in enumerate(tabuleiroPC if visivel else tabuleiro):
             print(f"{i + 0:2d} ", end='')
             for c in coluna:
                 print(c, end=' ')
@@ -40,40 +36,13 @@ def mostrar_tabuleiro(jogador, visivel):
         print()
 
 
-def checar_embarcacoes(jogador):
-
-    if jogador == 'PLAYER':
-        if vida_embarcacoes['AV'] == 0:
-            print('Porta-Aviões aliado afundado!')
-            vida_embarcacoes.pop('AV')
-        elif vida_embarcacoes['NT'] == 0:
-            print('Navio-Tanque aliado afundado!')
-            vida_embarcacoes.pop('NT')
-        elif vida_embarcacoes['CT'] == 0:
-            print('Contra-Torpedeiro aliado afundado!')
-            vida_embarcacoes.pop('CT')
-        elif vida_embarcacoes['SB'] == 0:
-            print('Submarino aliado afundado!')
-            vida_embarcacoes.pop('SB')
-        elif vida_embarcacoes['DT'] == 0:
-            print('Destroier aliado afundado!')
-            vida_embarcacoes.pop('DT')
-    else:
-        if vida_embarcacoesPC['AV'] == 0:
-            print('Porta-Aviões inimigo afundado!')
-            vida_embarcacoesPC.pop('AV')
-        elif vida_embarcacoesPC['NT'] == 0:
-            print('Navio-Tanque inimigo afundado!')
-            vida_embarcacoesPC.pop('NT')
-        elif vida_embarcacoesPC['CT'] == 0:
-            print('Contra-Torpedeiro inimigo afundado!')
-            vida_embarcacoesPC.pop('CT')
-        elif vida_embarcacoesPC['SB'] == 0:
-            print('Submarino inimigo afundado!')
-            vida_embarcacoesPC.pop('SB')
-        elif vida_embarcacoesPC['DT'] == 0:
-            print('Destroier inimigo afundado!')
-            vida_embarcacoesPC.pop('DT')
+def checar_valor(tabuleiro, numero):
+    contador = 0
+    for i in range(len(tabuleiro)):
+        for j in range(len(tabuleiro[i])):
+            if tabuleiro[i][j] == numero:
+                contador += 1
+    return contador
 
 
 def jogada(linha, coluna):
@@ -84,40 +53,77 @@ def jogada(linha, coluna):
                 return False
             else:
                 if tabuleiro2[linha][coluna] == 5:
+                    tabuleiro2[linha][coluna] = 0
                     vida_embarcacoes['AV'] -= 1
-                    checar_embarcacoes('PLAYER')
+                    if checar_valor(tabuleiro2, 5) == 0:
+                        vida_embarcacoes.pop('AV')
                 elif tabuleiro2[linha][coluna] == 4:
+                    tabuleiro2[linha][coluna] = 0
                     vida_embarcacoes['NT'] -= 1
-                    checar_embarcacoes('PLAYER')
+                    if checar_valor(tabuleiro2, 4) == 0:
+                        vida_embarcacoes.pop('NT')
                 elif tabuleiro2[linha][coluna] == 3:
+                    tabuleiro2[linha][coluna] = 0
                     vida_embarcacoes['CT'] -= 1
-                    checar_embarcacoes('PLAYER')
+                    if checar_valor(tabuleiro2, 3) == 0:
+                        vida_embarcacoes.pop('CT')
                 elif tabuleiro2[linha][coluna] == 2:
+                    tabuleiro2[linha][coluna] = 0
                     vida_embarcacoes['SB'] -= 1
-                    checar_embarcacoes('PLAYER')
+                    if checar_valor(tabuleiro2, 2) == 0:
+                        vida_embarcacoes.pop('SB')
                 elif tabuleiro2[linha][coluna] == 1:
+                    tabuleiro2[linha][coluna] = 0
                     vida_embarcacoes['DT'] -= 1
-                    checar_embarcacoes('PLAYER')
+                    if checar_valor(tabuleiro2, 1) == 0:
+                        vida_embarcacoes.pop('DT')
 
                 tabuleiroPLAYER[linha][coluna] = 'X'
                 return True
+
         else:
             try:
                 if tabuleiro[linha][coluna] == 0:
                     tabuleiroPC[linha][coluna] = 'O'
                     return False
                 else:
+                    if tabuleiro[linha][coluna] == 5:
+                        tabuleiro[linha][coluna] = 0
+                        vida_embarcacoesPC['AV'] -= 1
+                        if checar_valor(tabuleiro, 5) == 0:
+                            vida_embarcacoesPC.pop('AV')
+                    elif tabuleiro[linha][coluna] == 4:
+                        tabuleiro[linha][coluna] = 0
+                        vida_embarcacoesPC['NT'] -= 1
+                        if checar_valor(tabuleiro, 4) == 0:
+                            vida_embarcacoesPC.pop('NT')
+                    elif tabuleiro[linha][coluna] == 3:
+                        tabuleiro[linha][coluna] = 0
+                        vida_embarcacoesPC['CT'] -= 1
+                        if checar_valor(tabuleiro, 3) == 0:
+                            vida_embarcacoesPC.pop('CT')
+                    elif tabuleiro[linha][coluna] == 2:
+                        tabuleiro[linha][coluna] = 0
+                        vida_embarcacoesPC['SB'] -= 1
+                        if checar_valor(tabuleiro, 2) == 0:
+                            vida_embarcacoesPC.pop('SB')
+                    elif tabuleiro[linha][coluna] == 1:
+                        tabuleiro[linha][coluna] = 0
+                        vida_embarcacoesPC['DT'] -= 1
+                        if checar_valor(tabuleiro, 1) == 0:
+                            vida_embarcacoesPC.pop('DT')
+
                     tabuleiroPC[linha][coluna] = 'X'
                     return True
+
             except IndexError:
-                print(f'ERRO: Posição inválida {linha, coluna}. Impossível posicionar um veículo fora do jogo! '
+                print(f'ERRO: Posição inválida {linha, coluna}. Impossível atacar um veículo fora do jogo! '
                       f'Tente novamente.')
                 pass
 
 
 def embarcacoes(linha, coluna, embarcacao, orientacao, jogador):
     tamanho = 0
-
     if embarcacao == 'AV':
         tamanho_limite = 5
         valor_embarcacao = 5
@@ -136,38 +142,42 @@ def embarcacoes(linha, coluna, embarcacao, orientacao, jogador):
     else:
         print('ERRO: Veículo inválido!')
         return False
+
     if orientacao == 'h':
-        start_position = (linha, coluna)
-        end_position = (linha, coluna + tamanho_limite)
+        pos_inicial = (linha, coluna)
+        pos_final = (linha, coluna + tamanho_limite)
     else:
-        start_position = (linha, coluna)
-        end_position = (linha + tamanho_limite, coluna)
+        pos_inicial = (linha, coluna)
+        pos_final = (linha + tamanho_limite, coluna)
 
-    start_row, start_col = start_position
-    end_row, end_col = end_position
+    linha_inicial, coluna_inicial = pos_inicial
+    linha_final, coluna_final = pos_final
 
-    for i in range(start_row, end_row + 1):
-        for j in range(start_col, end_col + 1):
-            if tabuleiro2[i][j] != 0:
-                print('ERRO: Veículo sobreposto!')
-                return False
+    for i in range(linha_inicial, linha_final + 1):
+        for j in range(coluna_inicial, coluna_final + 1):
+            if jogador == 'PLAYER':
+                if tabuleiro2[i][j] != 0:
+                    print('ERRO: Veículo sobreposto!')
+                    return False
+            else:
+                if tabuleiro[i][j] != 0:
+                    return False
 
     while tamanho < tamanho_limite:
         if jogador == 'PLAYER':
             if orientacao == 'h':
-                if coluna + tamanho_limite >= 12:
+                if coluna + tamanho_limite >= 10:
                     print('ERRO: Posição inválida. O veículo não pode ficar fora do tabuleiro!')
                     return False
                 tabuleiro2[linha][coluna + tamanho] = valor_embarcacao
                 tamanho += 1
 
             elif orientacao == 'v':
-                if linha + tamanho_limite >= 7:
+                if linha + tamanho_limite >= 6:
                     print('ERRO: Posição inválida. O veículo não pode ficar fora do tabuleiro!')
                     return False
                 tabuleiro2[linha + tamanho][coluna] = valor_embarcacao
                 tamanho += 1
-                return True
             else:
                 orientacao = input('ERRO: Entrada incorreta. Escolha orientação horizontal ou vertical (h/v) '
                                    'do posicionamento: ')
@@ -176,24 +186,13 @@ def embarcacoes(linha, coluna, embarcacao, orientacao, jogador):
             if orientacao == 'h':
                 if coluna + tamanho_limite >= 10:
                     return False
-                elif tabuleiro2[linha][coluna + tamanho] != 0:
-                    while tamanho != -1:
-                        tamanho -= 1
-                        tabuleiro2[linha][coluna - tamanho] = 0
-                    return False
-                tabuleiro2[linha][coluna + tamanho] = valor_embarcacao
+                tabuleiro[linha][coluna + tamanho] = valor_embarcacao
                 tamanho += 1
             elif orientacao == 'v':
                 if linha + tamanho_limite >= 5:
                     return False
-                elif tabuleiro2[linha + tamanho][coluna] != 0:
-                    while tamanho != -1:
-                        tamanho -= 1
-                        tabuleiro2[linha - tamanho][coluna] = 0
-                    return False
-                tabuleiro2[linha + tamanho][coluna] = valor_embarcacao
+                tabuleiro[linha + tamanho][coluna] = valor_embarcacao
                 tamanho += 1
-
     return True
 
 
@@ -240,20 +239,21 @@ def inicializar():
     while embarcacoes_totalPC != 5:
         linha = random.randint(0, 4)
         coluna = random.randint(0, 9)
-        orientacao = random.choice(['h,' 'v'])
-        embarcacao = random.choice(tipos_embarcacoes)
-
-        if embarcacoes(linha, coluna, embarcacao, orientacao, 'PC'):
-            embarcacoes_totalPC += 1
-        else:
+        orientacao = 'h'
+        embarcacao = tipos_embarcacoes[embarcacoes_totalPC]
+        try:
+            if embarcacoes(linha, coluna, embarcacao, orientacao, 'PC'):
+                embarcacoes_totalPC += 1
+            else:
+                continue
+        except IndexError:
             continue
 
 
 def visual():
-
     print('')
     print('')
-    mostrar_tabuleiro('PC', True)
+    mostrar_tabuleiro('PC', False)
     print('')
     print(f'Embarcações restantes: {embarcacao_pc}')
     print('')
@@ -269,8 +269,12 @@ jogador = 'PC'
 inicializar()
 contador = 0
 continuar = 's'
+embarcacao_player = len(vida_embarcacoes)
+embarcacao_pc = len(vida_embarcacoesPC)
 
 while embarcacao_pc != 0 and embarcacao_player != 0:
+    embarcacao_player = len(vida_embarcacoes)
+    embarcacao_pc = len(vida_embarcacoesPC)
     contador = 0
     if continuar == 's':
         if jogador == 'PC':
@@ -284,43 +288,22 @@ while embarcacao_pc != 0 and embarcacao_player != 0:
                 print('O computador acertou!')
             else:
                 print('Nada atingido!')
-
-            for x in vida_embarcacoesPC:
-                contador += 1
-                embarcacao_pc = contador
-            for y in vida_embarcacoes:
-                contador += 1
-                embarcacao_player = contador
-
             visual()
-
             jogador = 'PLAYER'
-
             continuar = 's'
-
         else:
-
             linha = int(input('Digite a linha para atacar: '))
             coluna = int(input('Digite a coluna para atacar: '))
-
             if jogada(linha, coluna):
                 print('Você acertou!')
             else:
                 print('Nada atingido!')
-
-            for x in vida_embarcacoesPC:
-                contador += 1
-                embarcacao_pc = contador
-            for y in vida_embarcacoes:
-                contador += 1
-                embarcacao_player = contador
-
             visual()
-
             jogador = 'PC'
         continuar = input('Digite "s" para continuar: ')
     else:
         quit()
+
 
 if embarcacao_player == 0 and continuar == 's':
     print('Você perdeu!')
