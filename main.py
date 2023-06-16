@@ -17,16 +17,20 @@ def mostrar_tabuleiro(jogador, visivel):
         print()
         print("     0 1 2 3 4 5 6 7 8 9             0 1 2 3 4 5 6 7 8 9")
         print("     ___________________             ___________________")
-        for i, (coluna_pc, coluna_player) in enumerate(zip(tabuleiro2 if visivel else tabuleiroPLAYER, tabuleiro if visivel else tabuleiroPC)):
+        i = 0
+        for coluna_pc, coluna_player in zip(tabuleiro2 if visivel else tabuleiroPLAYER,
+                                            tabuleiro if visivel else tabuleiroPC):
             linha = ""
             linha += f"{i + 0:2d} {'|'} "
-            for pc, jogador in zip(coluna_pc, coluna_player):
+            pc_zip = zip(coluna_pc, coluna_player)
+            for pc, jogador in pc_zip:
                 linha += f"{pc} "
             linha += '\t\t'
             linha += f"{i + 0:2d} {'|'} "
             for jogador in coluna_player:
                 linha += f"{jogador} "
             print(linha)
+            i += 1
         print()
         mostrar_vida()
     else:
@@ -226,7 +230,7 @@ def inicializar():
 
     embarcacoes_total = 0
     embarcacoes_totalPC = 0
-    while embarcacoes_total < 5:
+    while embarcacoes_total < 1:
         mostrar_tabuleiro('PLAYER', True)
         embarcacao = input(
             'Digite o veículo (AV: Porta-Avião / NT: Navio-Tanque / CT: Contra-Torpedeiro '
